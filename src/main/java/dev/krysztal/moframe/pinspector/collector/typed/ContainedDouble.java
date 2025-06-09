@@ -27,6 +27,6 @@ public final class ContainedDouble extends Contained<Double> {
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedContent(this, "Double", MessageFormat.format("{}", this.value));
+        return ComponentUtil.buildTypedComponent(this.getKey(), "Double", MessageFormat.format("{}", this.value));
     }
 }

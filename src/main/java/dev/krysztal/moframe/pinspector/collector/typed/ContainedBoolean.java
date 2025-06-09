@@ -26,7 +26,7 @@ public final class ContainedBoolean extends Contained<Boolean> {
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedContent(this, "Boolean", this.value.toString());
+        return ComponentUtil.buildTypedComponent(this.getKey(), "Boolean", this.value.toString());
     }
 
 }

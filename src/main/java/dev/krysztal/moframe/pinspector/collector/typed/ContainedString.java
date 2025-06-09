@@ -26,6 +26,6 @@ public final class ContainedString extends Contained<String> {
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedContent(this, "String", value);
+        return ComponentUtil.buildTypedComponent(this.getKey(), "String", value);
     }
 }

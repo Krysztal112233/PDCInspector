@@ -8,23 +8,27 @@
 // See the file LICENSE for the full license text.
 package dev.krysztal.moframe.pinspector.util;
 
-import dev.krysztal.moframe.pinspector.collector.typed.Contained;
+import io.vavr.collection.Stream;
 import java.text.MessageFormat;
+import java.util.List;
+import java.util.function.BiFunction;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.NamespacedKey;
 
 public final class ComponentUtil {
 
-    public static Component buildTypedContent(
-            final Contained<?> deepthContainer,
+    public static Component buildTypedComponent(
+            final NamespacedKey key,
             final String type,
             final String content) {
+
         return Component.empty()
                 .append(Component
                         .text()
-                        .content(MessageFormat.format("[{}]", deepthContainer.getKey().asMinimalString()))
+                        .content(MessageFormat.format("[{}]", key.asMinimalString()))
                         .color(NamedTextColor.AQUA)
                         .decorate(TextDecoration.ITALIC))
                 .appendSpace()
@@ -34,7 +38,7 @@ public final class ComponentUtil {
                         .color(NamedTextColor.GREEN)
                         .hoverEvent(HoverEvent
                                 .showText(Component
-                                        .text(content, NamedTextColor.YELLOW)
+                                        .text(type, NamedTextColor.YELLOW)
                                         .decorate(TextDecoration.ITALIC))));
     }
 }
