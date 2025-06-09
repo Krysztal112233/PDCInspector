@@ -14,6 +14,7 @@ import dev.krysztal.moframe.pinspector.collector.typed.Contained;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.vavr.collection.Stream;
 import io.vavr.control.Try;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import lombok.AccessLevel;
@@ -27,7 +28,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ContainerRemapper {
-    private static final List<BiFunction<PersistentDataContainer, NamespacedKey, Try<Contained<?>>>> TRY_FLOW = List
+    private static final List<BiFunction<PersistentDataContainerView, NamespacedKey, Try<Contained<?>>>> TRY_FLOW = List
             .of(f(BYTE),
                     f(SHORT),
                     f(INTEGER),
@@ -53,7 +54,7 @@ public class ContainerRemapper {
         return new ContainerRemapper(pdc);
     }
 
-    private static <P, C> BiFunction<PersistentDataContainer, NamespacedKey, Try<Contained<?>>> f(
+    private static <P, C> BiFunction<PersistentDataContainerView, NamespacedKey, Try<Contained<?>>> f(
             final PersistentDataType<P, C> type) {
         return (c, key) -> Try.of(() -> c.get(key, LONG_ARRAY)).map(value -> Contained.of(key, value));
     }
@@ -61,16 +62,19 @@ public class ContainerRemapper {
     @Getter
     private final PersistentDataContainerView pdc;
 
-    public Contained<?> consume() {
+    public List<Contained<?>> consume() {
+        var result = new ArrayList();
         for (final NamespacedKey key : this.getPdc().getKeys()) {
-            Try.of(() -> this.getPdc().get(key, TAG_CONTAINER));
+            result.add(this.matcher(this.getPdc(), key));
         }
-
-        return null;
+        return result;
     }
 
-    public Contained<?> matcher(final PersistentDataContainer container, final NamespacedKey key) {
-        return Stream.ofAll(TRY_FLOW).map(f -> f.apply(container, key)).flatMap(Try::toOption).headOption()
+    public Contained<?> matcher(final PersistentDataContainerView container, final NamespacedKey key) {
+        return Stream
+                .ofAll(TRY_FLOW).map(f -> f.apply(container, key))
+                .flatMap(Try::toOption)
+                .headOption()
                 .getOrElse(Contained.unsupported(key));
     }
 }
