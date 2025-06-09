@@ -20,17 +20,21 @@ import org.bukkit.NamespacedKey;
 
 public final class ComponentUtil {
 
-    public static Component buildTypedComponent(
-            final NamespacedKey key,
-            final String type,
-            final String content) {
-
+    private static Component namespacedKey(final NamespacedKey key) {
         return Component.empty()
                 .append(Component
                         .text()
                         .content(MessageFormat.format("[{}]", key.asMinimalString()))
                         .color(NamedTextColor.AQUA)
-                        .decorate(TextDecoration.ITALIC))
+                        .decorate(TextDecoration.BOLD));
+    }
+
+    public static Component buildTypedComponent(
+            final NamespacedKey key,
+            final String type,
+            final String content) {
+
+        return namespacedKey(key)
                 .appendSpace()
                 .append(Component
                         .text()
@@ -64,20 +68,20 @@ public final class ComponentUtil {
                 .map(withIndex -> mapping.apply(withIndex._2, withIndex._1).appendSpace());
 
         if (array.size() <= length * 2) {
-            return result.fold(Component.empty(), (a, b) -> a.append(b));
+            return namespacedKey(key).append(result.fold(Component.empty(), (a, b) -> a.append(b)));
         }
 
-        var left = result.takeRight(length).fold(Component.empty(), (a, b) -> a.append(b));
-        var right = result.take(length).fold(Component.empty(), (a, b) -> a.append(b));
-        var between = result.drop(length).dropRight(length).fold(Component.empty(), (a, b) -> a.append(b));
+        final var left = result.takeRight(length).fold(Component.empty(), (a, b) -> a.append(b));
+        final var right = result.take(length).fold(Component.empty(), (a, b) -> a.append(b));
+        final var between = result.drop(length).dropRight(length).fold(Component.empty(), (a, b) -> a.append(b));
 
-        return Component.empty()
+        return namespacedKey(key).append (Component.empty()
                 .append(left)
                 .appendSpace()
                 .append(Component
                         .text("...")
                         .hoverEvent(HoverEvent.showText(between)))
                 .appendSpace()
-                .append(right);
+                .append(right));
     }
 }
