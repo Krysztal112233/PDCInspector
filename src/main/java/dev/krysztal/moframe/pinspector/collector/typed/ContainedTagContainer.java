@@ -9,14 +9,17 @@
 package dev.krysztal.moframe.pinspector.collector.typed;
 
 import dev.krysztal.moframe.pinspector.collector.ContainerRemapper;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 
 @AllArgsConstructor()
-public final class ContainedTagContainer extends Contained<Contained<?>> {
+public final class ContainedTagContainer extends Contained<List<Contained<?>>> {
     protected ContainedTagContainer(NamespacedKey key, PersistentDataContainer container) {
         this.value = ContainerRemapper.of(container).consume();
         this.key = key;
@@ -26,11 +29,32 @@ public final class ContainedTagContainer extends Contained<Contained<?>> {
     private final NamespacedKey key;
 
     @Getter
-    private Contained<?> value;
+    private List<Contained<?>> value;
 
     @Override
     public Component toAdventureComponent() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toAdventureComponent'");
+        Component header = Component.text()
+                .append(Component
+                        .text(key.toString(), NamedTextColor.GOLD))
+                .append(Component
+                        .empty()
+                        .appendSpace()
+                        .append(Component
+                                .text("(TAG_CONTAINER)", NamedTextColor.GRAY)))
+                .build();
+
+        if (value.isEmpty()) {
+            return header;
+        }
+
+        Component childrenBlock = Component.join(
+                JoinConfiguration.separator(Component.newline()),
+                value.stream()
+                        .map(child -> Component.text("  ").append(child.toAdventureComponent()))
+                        .toList());
+
+        return Component.join(
+                JoinConfiguration.separator(Component.newline()),
+                header, childrenBlock);
     }
 }
