@@ -8,14 +8,13 @@
 // See the file LICENSE for the full license text.
 package dev.krysztal.moframe.pinspector.collector.typed;
 
+import dev.krysztal.moframe.pinspector.util.ComponentUtil;
+import io.vavr.collection.Stream;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
-
-import dev.krysztal.moframe.pinspector.util.ComponentUtil;
-import io.vavr.collection.Stream;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public final class ContainedIntegerArray extends Contained<int[]> {
