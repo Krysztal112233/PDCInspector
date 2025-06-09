@@ -63,7 +63,7 @@ public class ContainerRemapper {
     private final PersistentDataContainerView pdc;
 
     public List<Contained<?>> consume() {
-        var result = new ArrayList();
+        final var result = new ArrayList();
         for (final NamespacedKey key : this.getPdc().getKeys()) {
             result.add(this.matcher(this.getPdc(), key));
         }

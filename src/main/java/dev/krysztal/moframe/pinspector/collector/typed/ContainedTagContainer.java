@@ -14,13 +14,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 
 @AllArgsConstructor()
 public final class ContainedTagContainer extends Contained<List<Contained<?>>> {
-    protected ContainedTagContainer(NamespacedKey key, PersistentDataContainer container) {
+    protected ContainedTagContainer(final NamespacedKey key, final PersistentDataContainer container) {
         this.value = ContainerRemapper.of(container).consume();
         this.key = key;
     }
@@ -29,28 +31,35 @@ public final class ContainedTagContainer extends Contained<List<Contained<?>>> {
     private final NamespacedKey key;
 
     @Getter
-    private List<Contained<?>> value;
+    private final List<Contained<?>> value;
 
     @Override
     public Component toAdventureComponent() {
-        Component header = Component.text()
+        final Component header = Component.text()
                 .append(Component
-                        .text(key.toString(), NamedTextColor.GOLD))
+                        .text(key.toString(), NamedTextColor.AQUA)
+                        .decorate(TextDecoration.BOLD))
                 .append(Component
                         .empty()
                         .appendSpace()
                         .append(Component
-                                .text("(TAG_CONTAINER)", NamedTextColor.GRAY)))
+                                .text("(TAG_CONTAINER)", NamedTextColor.GRAY))
+                        .hoverEvent(HoverEvent
+                                .showText(Component
+                                        .text("This is a composite type")
+                                        .decorate(TextDecoration.ITALIC))))
                 .build();
 
         if (value.isEmpty()) {
             return header;
         }
 
-        Component childrenBlock = Component.join(
+        final Component childrenBlock = Component.join(
                 JoinConfiguration.separator(Component.newline()),
                 value.stream()
-                        .map(child -> Component.text("  ").append(child.toAdventureComponent()))
+                        .map(child -> Component
+                                .text("    ")
+                                .append(child.toAdventureComponent()))
                         .toList());
 
         return Component.join(
