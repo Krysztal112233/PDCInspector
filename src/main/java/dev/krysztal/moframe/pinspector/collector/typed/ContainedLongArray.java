@@ -8,6 +8,8 @@
 // See the file LICENSE for the full license text.
 package dev.krysztal.moframe.pinspector.collector.typed;
 
+import dev.krysztal.moframe.pinspector.util.ComponentUtil;
+import io.vavr.collection.Stream;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +30,7 @@ public final class ContainedLongArray extends Contained<long[]> {
 
     @Override
     public Component toAdventureComponent() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toAdventureComponent'");
+        var list = Stream.ofAll(this.getValue()).toJavaList();
+        return ComponentUtil.buildTypedArrayComponent(this.getKey(), "Long[]", list, 4);
     }
 }

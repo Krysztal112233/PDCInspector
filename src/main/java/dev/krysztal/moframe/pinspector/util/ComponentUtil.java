@@ -41,4 +41,43 @@ public final class ComponentUtil {
                                         .text(type, NamedTextColor.YELLOW)
                                         .decorate(TextDecoration.ITALIC))));
     }
+
+    public static <T> Component buildTypedArrayComponent(
+            final NamespacedKey key,
+            final String type,
+            final List<T> array,
+            final int length) {
+
+        final BiFunction<Integer, Object, Component> mapping = (index, value) -> {
+            return Component.empty()
+                    .append(Component
+                            .text()
+                            .content(MessageFormat.format("[{}] {}", index, value))
+                            .hoverEvent(HoverEvent
+                                    .showText(Component
+                                            .text(type, NamedTextColor.YELLOW)
+                                            .decorate(TextDecoration.ITALIC))));
+        };
+
+        final var result = Stream.ofAll(array)
+                .zipWithIndex()
+                .map(withIndex -> mapping.apply(withIndex._2, withIndex._1).appendSpace());
+
+        if (array.size() <= length * 2) {
+            return result.fold(Component.empty(), (a, b) -> a.append(b));
+        }
+
+        var left = result.takeRight(length).fold(Component.empty(), (a, b) -> a.append(b));
+        var right = result.take(length).fold(Component.empty(), (a, b) -> a.append(b));
+        var between = result.drop(length).dropRight(length).fold(Component.empty(), (a, b) -> a.append(b));
+
+        return Component.empty()
+                .append(left)
+                .appendSpace()
+                .append(Component
+                        .text("...")
+                        .hoverEvent(HoverEvent.showText(between)))
+                .appendSpace()
+                .append(right);
+    }
 }

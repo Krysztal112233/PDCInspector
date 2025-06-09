@@ -14,6 +14,9 @@ import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 
+import dev.krysztal.moframe.pinspector.util.ComponentUtil;
+import io.vavr.collection.Stream;
+
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public final class ContainedByteArray extends Contained {
 
@@ -28,7 +31,7 @@ public final class ContainedByteArray extends Contained {
 
     @Override
     public Component toAdventureComponent() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toAdventureComponent'");
+        var list = Stream.ofAll(this.getValue()).toJavaList();
+        return ComponentUtil.buildTypedArrayComponent(this.getKey(), "Byte[]", list, 4);
     }
 }
