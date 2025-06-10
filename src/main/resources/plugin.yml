@@ -1,5 +1,5 @@
 name: Pinspector
 version: "1.0"
-description: The core of MoFrame serials plugin
+description: "PersistentDataContainer(PDC) inspector"
 api-version: 1.21.4
-main: dev.krysztal.moframe.pinspector.Plugin
+main: dev.krysztal.pinspector.Plugin

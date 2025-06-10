@@ -1,2 +1,2 @@
 @org.jetbrains.annotations.NotNullByDefault
-package dev.krysztal.moframe.pinspector;
+package dev.krysztal.pinspector;

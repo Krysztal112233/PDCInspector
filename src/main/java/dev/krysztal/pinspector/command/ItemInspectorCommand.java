@@ -6,9 +6,8 @@
 // version 3 of the License, or (at your option) any later version.
 //
 // See the file LICENSE for the full license text.
-package dev.krysztal.moframe.pinspector;
+package dev.krysztal.pinspector.command;
 
-import org.bukkit.plugin.java.JavaPlugin;
+public class ItemInspectorCommand {
 
-public class Plugin extends JavaPlugin {
 }

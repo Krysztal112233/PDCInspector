@@ -6,7 +6,7 @@
 // version 3 of the License, or (at your option) any later version.
 //
 // See the file LICENSE for the full license text.
-package dev.krysztal.moframe.pinspector.collector.typed;
+package dev.krysztal.pinspector.collector.typed;
 
 import java.text.MessageFormat;
 import javax.annotation.Nullable;

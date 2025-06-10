@@ -6,9 +6,9 @@
 // version 3 of the License, or (at your option) any later version.
 //
 // See the file LICENSE for the full license text.
-package dev.krysztal.moframe.pinspector.collector.typed;
+package dev.krysztal.pinspector.collector.typed;
 
-import dev.krysztal.moframe.pinspector.collector.ContainerRemapper;
+import dev.krysztal.pinspector.collector.ContainerRemapper;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

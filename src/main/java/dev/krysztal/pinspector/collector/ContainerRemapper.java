@@ -6,11 +6,11 @@
 // version 3 of the License, or (at your option) any later version.
 //
 // See the file LICENSE for the full license text.
-package dev.krysztal.moframe.pinspector.collector;
+package dev.krysztal.pinspector.collector;
 
 import static org.bukkit.persistence.PersistentDataType.*;
 
-import dev.krysztal.moframe.pinspector.collector.typed.Contained;
+import dev.krysztal.pinspector.collector.typed.Contained;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.vavr.collection.Stream;
 import io.vavr.control.Try;

@@ -6,7 +6,7 @@
 // version 3 of the License, or (at your option) any later version.
 //
 // See the file LICENSE for the full license text.
-package dev.krysztal.moframe.pinspector.util;
+package dev.krysztal.pinspector.util;
 
 import io.vavr.collection.Stream;
 import java.text.MessageFormat;

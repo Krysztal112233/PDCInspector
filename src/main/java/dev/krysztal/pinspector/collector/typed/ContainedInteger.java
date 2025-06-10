@@ -6,9 +6,9 @@
 // version 3 of the License, or (at your option) any later version.
 //
 // See the file LICENSE for the full license text.
-package dev.krysztal.moframe.pinspector.collector.typed;
+package dev.krysztal.pinspector.collector.typed;
 
-import dev.krysztal.moframe.pinspector.util.ComponentUtil;
+import dev.krysztal.pinspector.util.ComponentUtil;
 import java.text.MessageFormat;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,16 +17,17 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public final class ContainedByte extends Contained<Byte> {
+public final class ContainedInteger extends Contained<Integer> {
 
     @Getter
     private final NamespacedKey key;
 
     @Getter
-    private final Byte value;
+    private final Integer value;
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedComponent(this.getKey(), "Byte", MessageFormat.format("{}", this.value));
+        return ComponentUtil.buildTypedComponent(this.getKey(), "Integer", MessageFormat.format("{}", this.value));
     }
+
 }
