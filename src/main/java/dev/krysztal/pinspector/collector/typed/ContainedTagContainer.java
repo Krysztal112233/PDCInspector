@@ -9,8 +9,8 @@
 package dev.krysztal.pinspector.collector.typed;
 
 import dev.krysztal.pinspector.collector.ContainerRemapper;
+import java.util.Collections;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
@@ -20,18 +20,20 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 
-@AllArgsConstructor()
 public final class ContainedTagContainer extends Contained<List<Contained<?>>> {
-    protected ContainedTagContainer(final NamespacedKey key, final PersistentDataContainer container) {
+    @Getter
+    private final NamespacedKey key;
+
+    private final List<Contained<?>> value;
+
+    ContainedTagContainer(final NamespacedKey key, final PersistentDataContainer container) {
         this.value = ContainerRemapper.of(container).consume();
         this.key = key;
     }
 
-    @Getter
-    private final NamespacedKey key;
-
-    @Getter
-    private final List<Contained<?>> value;
+    public List<Contained<?>> getValue() {
+        return Collections.unmodifiableList(this.value);
+    }
 
     @Override
     public Component toAdventureComponent() {
