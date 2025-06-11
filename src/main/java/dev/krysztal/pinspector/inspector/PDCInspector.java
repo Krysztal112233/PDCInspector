@@ -64,7 +64,7 @@ public class PDCInspector {
     private final PersistentDataContainerView pdc;
 
     public List<Contained<?>> consume() {
-        final var result = new ArrayList();
+        final var result = new ArrayList<Contained<?>>();
         for (final NamespacedKey key : this.getPdc().getKeys()) {
             result.add(this.matcher(this.getPdc(), key));
         }
