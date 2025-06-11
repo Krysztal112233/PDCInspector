@@ -6,7 +6,7 @@
 // version 3 of the License, or (at your option) any later version.
 //
 // See the file LICENSE for the full license text.
-package dev.krysztal.pinspector.collector.typed;
+package dev.krysztal.pinspector.inspector.typed;
 
 import dev.krysztal.pinspector.util.ComponentUtil;
 import java.text.MessageFormat;
@@ -17,16 +17,16 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public final class ContainedDouble extends Contained<Double> {
+public final class ContainedByte extends Contained<Byte> {
 
     @Getter
     private final NamespacedKey key;
 
     @Getter
-    private final Double value;
+    private final Byte value;
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedComponent(this.getKey(), "Double", MessageFormat.format("{}", this.value));
+        return ComponentUtil.buildTypedComponent(this.getKey(), "Byte", MessageFormat.format("{}", this.value));
     }
 }

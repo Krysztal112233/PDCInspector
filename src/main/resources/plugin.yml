@@ -3,3 +3,6 @@ version: "1.0"
 description: "PersistentDataContainer(PDC) inspector"
 api-version: 1.21.4
 main: dev.krysztal.pinspector.Plugin
+libraries:
+    - "io.vavr:vavr:0.10.6"
+    - "one.util:streamex:0.8.3"

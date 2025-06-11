@@ -8,6 +8,29 @@
 // See the file LICENSE for the full license text.
 package dev.krysztal.pinspector.command.suggestion;
 
-public class PlayerSuggestion {
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import java.util.concurrent.CompletableFuture;
+import one.util.streamex.StreamEx;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+public enum PlayerSuggestion implements SuggestionProvider<CommandSourceStack> {
+    INSTANCE;
+
+    @Override
+    public CompletableFuture<Suggestions> getSuggestions(
+            final CommandContext<CommandSourceStack> context,
+            final SuggestionsBuilder builder) throws CommandSyntaxException {
+
+        return StreamEx.of(Bukkit.getOnlinePlayers())
+                .parallel()
+                .map(Player::getName)
+                .foldLeft(builder, SuggestionsBuilder::suggest)
+                .buildFuture();
+    }
 }

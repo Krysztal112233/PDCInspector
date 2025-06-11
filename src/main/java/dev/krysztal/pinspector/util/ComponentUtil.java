@@ -8,6 +8,8 @@
 // See the file LICENSE for the full license text.
 package dev.krysztal.pinspector.util;
 
+import com.mojang.brigadier.Message;
+import io.papermc.paper.command.brigadier.MessageComponentSerializer;
 import io.vavr.collection.Stream;
 import java.text.MessageFormat;
 import java.util.List;
@@ -75,7 +77,7 @@ public final class ComponentUtil {
         final var right = result.take(length).fold(Component.empty(), (a, b) -> a.append(b));
         final var between = result.drop(length).dropRight(length).fold(Component.empty(), (a, b) -> a.append(b));
 
-        return namespacedKey(key).append (Component.empty()
+        return namespacedKey(key).append(Component.empty()
                 .append(left)
                 .appendSpace()
                 .append(Component
@@ -83,5 +85,9 @@ public final class ComponentUtil {
                         .hoverEvent(HoverEvent.showText(between)))
                 .appendSpace()
                 .append(right));
+    }
+
+    public static Message toMessage(Component component) {
+        return MessageComponentSerializer.message().serialize(component);
     }
 }

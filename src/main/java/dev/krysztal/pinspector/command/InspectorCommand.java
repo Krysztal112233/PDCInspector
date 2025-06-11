@@ -8,17 +8,26 @@
 // See the file LICENSE for the full license text.
 package dev.krysztal.pinspector.command;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import dev.krysztal.pinspector.PluginPermission;
+import dev.krysztal.pinspector.command.executor.PlayerInspector;
+import dev.krysztal.pinspector.command.suggestion.PlayerSuggestion;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
 
-public class InspectorCommand implements CommandExecutor {
-
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
-            @NotNull String @NotNull [] args) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'onCommand'");
+public class InspectorCommand {
+    public static LiteralArgumentBuilder<CommandSourceStack> createCommand() {
+        return Commands
+                .literal("pinspect")
+                .requires(s -> s.getSender().hasPermission(PluginPermission.PDC_DEBUGGER))
+                // .then(Commands.literal("chunk"))
+                // .then(Commands.literal("world"))
+                .then(Commands
+                        .literal("player")
+                        .then(Commands
+                                .argument("name", StringArgumentType.word())
+                                .suggests(PlayerSuggestion.INSTANCE)
+                                .executes(PlayerInspector.INSTANCE)));
     }
 }

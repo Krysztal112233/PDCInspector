@@ -6,9 +6,8 @@
 // version 3 of the License, or (at your option) any later version.
 //
 // See the file LICENSE for the full license text.
-package dev.krysztal.pinspector.collector.typed;
+package dev.krysztal.pinspector.inspector.typed;
 
-import dev.krysztal.pinspector.collector.ContainerRemapper;
 import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
@@ -20,6 +19,8 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 
+import dev.krysztal.pinspector.inspector.PDCInspector;
+
 public final class ContainedTagContainer extends Contained<List<Contained<?>>> {
     @Getter
     private final NamespacedKey key;
@@ -27,7 +28,7 @@ public final class ContainedTagContainer extends Contained<List<Contained<?>>> {
     private final List<Contained<?>> value;
 
     ContainedTagContainer(final NamespacedKey key, final PersistentDataContainer container) {
-        this.value = ContainerRemapper.of(container).consume();
+        this.value = PDCInspector.of(container).consume();
         this.key = key;
     }
 

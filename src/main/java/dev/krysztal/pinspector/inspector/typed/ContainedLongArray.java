@@ -6,10 +6,10 @@
 // version 3 of the License, or (at your option) any later version.
 //
 // See the file LICENSE for the full license text.
-package dev.krysztal.pinspector.collector.typed;
+package dev.krysztal.pinspector.inspector.typed;
 
 import dev.krysztal.pinspector.util.ComponentUtil;
-import java.text.MessageFormat;
+import io.vavr.collection.Stream;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,17 +17,20 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public final class ContainedLong extends Contained<Long> {
+public final class ContainedLongArray extends Contained<long[]> {
 
     @Getter
     private final NamespacedKey key;
 
-    @Getter
-    private final Long value;
+    private final long[] value;
+
+    public long[] getValue() {
+        return this.value.clone();
+    }
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedComponent(this.getKey(), "Long", MessageFormat.format("{}", this.value));
+        var list = Stream.ofAll(this.getValue()).toJavaList();
+        return ComponentUtil.buildTypedArrayComponent(this.getKey(), "Long[]", list, 4);
     }
-
 }

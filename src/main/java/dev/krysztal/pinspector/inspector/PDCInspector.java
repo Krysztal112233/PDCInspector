@@ -6,11 +6,10 @@
 // version 3 of the License, or (at your option) any later version.
 //
 // See the file LICENSE for the full license text.
-package dev.krysztal.pinspector.collector;
+package dev.krysztal.pinspector.inspector;
 
 import static org.bukkit.persistence.PersistentDataType.*;
 
-import dev.krysztal.pinspector.collector.typed.Contained;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.vavr.collection.Stream;
 import io.vavr.control.Try;
@@ -26,8 +25,10 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
 
+import dev.krysztal.pinspector.inspector.typed.Contained;
+
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ContainerRemapper {
+public class PDCInspector {
     private static final List<BiFunction<PersistentDataContainerView, NamespacedKey, Try<Contained<?>>>> TRY_FLOW = List
             .of(f(BYTE),
                     f(SHORT),
@@ -42,16 +43,16 @@ public class ContainerRemapper {
                     f(LONG_ARRAY),
                     f(TAG_CONTAINER));
 
-    public static ContainerRemapper of(final PersistentDataHolder pdh) {
-        return new ContainerRemapper(pdh.getPersistentDataContainer());
+    public static PDCInspector of(final PersistentDataHolder pdh) {
+        return new PDCInspector(pdh.getPersistentDataContainer());
     }
 
-    public static ContainerRemapper of(final ItemStack itemStack) {
-        return new ContainerRemapper(itemStack.getPersistentDataContainer());
+    public static PDCInspector of(final ItemStack itemStack) {
+        return new PDCInspector(itemStack.getPersistentDataContainer());
     }
 
-    public static ContainerRemapper of(final PersistentDataContainer pdc) {
-        return new ContainerRemapper(pdc);
+    public static PDCInspector of(final PersistentDataContainer pdc) {
+        return new PDCInspector(pdc);
     }
 
     private static <P, C> BiFunction<PersistentDataContainerView, NamespacedKey, Try<Contained<?>>> f(
