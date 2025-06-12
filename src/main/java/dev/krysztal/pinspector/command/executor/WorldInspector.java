@@ -13,9 +13,9 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.vavr.control.Option;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.World;
 
-public enum PlayerInspector implements Inspector {
+public enum WorldInspector implements Inspector {
     INSTANCE;
 
     @Override
@@ -23,7 +23,7 @@ public enum PlayerInspector implements Inspector {
             CommandContext<CommandSourceStack> context) {
         var playerName = context.getArgument("name", String.class);
 
-        return Option.of(Bukkit.getPlayer(playerName)).map(Player::getPersistentDataContainer);
+        return Option.of(Bukkit.getWorld(playerName)).map(World::getPersistentDataContainer);
     }
 
 }

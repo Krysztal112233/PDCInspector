@@ -8,6 +8,7 @@
 // See the file LICENSE for the full license text.
 package dev.krysztal.pinspector.inspector.typed;
 
+import dev.krysztal.pinspector.inspector.PDCInspector;
 import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
@@ -18,8 +19,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
-
-import dev.krysztal.pinspector.inspector.PDCInspector;
 
 public final class ContainedTagContainer extends Contained<List<Contained<?>>> {
     @Getter

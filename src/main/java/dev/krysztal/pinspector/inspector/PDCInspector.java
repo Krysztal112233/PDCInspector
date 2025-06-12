@@ -10,6 +10,7 @@ package dev.krysztal.pinspector.inspector;
 
 import static org.bukkit.persistence.PersistentDataType.*;
 
+import dev.krysztal.pinspector.inspector.typed.Contained;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.vavr.collection.Stream;
 import io.vavr.control.Try;
@@ -21,11 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
-
-import dev.krysztal.pinspector.inspector.typed.Contained;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PDCInspector {
@@ -51,7 +49,7 @@ public class PDCInspector {
         return new PDCInspector(itemStack.getPersistentDataContainer());
     }
 
-    public static PDCInspector of(final PersistentDataContainer pdc) {
+    public static PDCInspector of(PersistentDataContainerView pdc) {
         return new PDCInspector(pdc);
     }
 

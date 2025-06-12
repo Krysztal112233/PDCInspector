@@ -12,7 +12,9 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.krysztal.pinspector.PluginPermission;
 import dev.krysztal.pinspector.command.executor.PlayerInspector;
+import dev.krysztal.pinspector.command.executor.WorldInspector;
 import dev.krysztal.pinspector.command.suggestion.PlayerSuggestion;
+import dev.krysztal.pinspector.command.suggestion.WorldSuggestion;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 
@@ -22,7 +24,12 @@ public class InspectorCommand {
                 .literal("pinspect")
                 .requires(s -> s.getSender().hasPermission(PluginPermission.PDC_DEBUGGER))
                 // .then(Commands.literal("chunk"))
-                // .then(Commands.literal("world"))
+                .then(Commands
+                        .literal("world")
+                        .then(Commands
+                                .argument("name", StringArgumentType.word())
+                                .suggests(WorldSuggestion.INSTANCE)
+                                .executes(WorldInspector.INSTANCE)))
                 .then(Commands
                         .literal("player")
                         .then(Commands
