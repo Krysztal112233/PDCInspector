@@ -9,14 +9,21 @@
 package dev.krysztal.pinspector;
 
 import dev.krysztal.pinspector.command.InspectorCommand;
+import dev.krysztal.pinspector.listener.DebugListener;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Plugin extends JavaPlugin {
 
     @Getter
-    private static JavaPlugin pluginInstance = null;
+    private static Plugin pluginInstance = null;
+
+    public NamespacedKey ofNamespacedKey(final String key) {
+        return new NamespacedKey(this, key);
+    }
 
     @Override
     public void onLoad() {
@@ -25,6 +32,8 @@ public class Plugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Bukkit.getPluginManager().registerEvents(new DebugListener(), this);
+
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, cmd -> {
             cmd.registrar().register(InspectorCommand.createCommand().build());
         });

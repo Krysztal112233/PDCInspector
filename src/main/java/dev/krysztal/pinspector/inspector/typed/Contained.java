@@ -27,7 +27,7 @@ public abstract sealed class Contained<T> permits
         ContainedTagContainer,
         ContainedUnsupport {
     public static Contained<?> of(final NamespacedKey key, final Boolean value) {
-        return new ContainedBoolean(key, value);
+        return ContainedBoolean.of(key, value);
     }
 
     public static Contained<?> of(final NamespacedKey key, final byte[] value) {
@@ -80,7 +80,7 @@ public abstract sealed class Contained<T> permits
 
     abstract public Component toAdventureComponent();
 
-    abstract protected T getValue();
-
     abstract public NamespacedKey getKey();
+
+    abstract protected T getValue();
 }

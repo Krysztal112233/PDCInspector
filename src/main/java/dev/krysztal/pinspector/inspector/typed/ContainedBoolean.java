@@ -16,13 +16,18 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public final class ContainedBoolean extends Contained<Boolean> {
+public final class ContainedBoolean extends Contained<Byte> {
+
+    public static ContainedBoolean of(final NamespacedKey key, final Boolean value) {
+        final var b2 = (byte) (value ? 1 : 0);
+        return new ContainedBoolean(key, b2);
+    }
 
     @Getter
     private final NamespacedKey key;
 
     @Getter
-    private final Boolean value;
+    private final Byte value;
 
     @Override
     public Component toAdventureComponent() {

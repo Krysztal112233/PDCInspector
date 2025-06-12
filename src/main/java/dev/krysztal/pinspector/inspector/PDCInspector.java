@@ -23,23 +23,22 @@ import lombok.Getter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataHolder;
-import org.bukkit.persistence.PersistentDataType;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PDCInspector {
     private static final List<BiFunction<PersistentDataContainerView, NamespacedKey, Try<Contained<?>>>> TRY_FLOW = List
-            .of(f(BYTE),
-                    f(SHORT),
-                    f(INTEGER),
-                    f(LONG),
-                    f(FLOAT),
-                    f(DOUBLE),
-                    f(BOOLEAN),
-                    f(STRING),
-                    f(BYTE_ARRAY),
-                    f(INTEGER_ARRAY),
-                    f(LONG_ARRAY),
-                    f(TAG_CONTAINER));
+            .of((c, key) -> Try.of(() -> c.get(key, BYTE)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, SHORT)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, INTEGER)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, LONG)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, FLOAT)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, DOUBLE)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, BOOLEAN)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, STRING)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, BYTE_ARRAY)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, INTEGER_ARRAY)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, LONG_ARRAY)).map(value -> Contained.of(key, value)),
+                    (c, key) -> Try.of(() -> c.get(key, TAG_CONTAINER)).map(value -> Contained.of(key, value)));
 
     public static PDCInspector of(final PersistentDataHolder pdh) {
         return new PDCInspector(pdh.getPersistentDataContainer());
@@ -51,11 +50,6 @@ public class PDCInspector {
 
     public static PDCInspector of(PersistentDataContainerView pdc) {
         return new PDCInspector(pdc);
-    }
-
-    private static <P, C> BiFunction<PersistentDataContainerView, NamespacedKey, Try<Contained<?>>> f(
-            final PersistentDataType<P, C> type) {
-        return (c, key) -> Try.of(() -> c.get(key, LONG_ARRAY)).map(value -> Contained.of(key, value));
     }
 
     @Getter

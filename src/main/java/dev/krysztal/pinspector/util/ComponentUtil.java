@@ -26,7 +26,7 @@ public final class ComponentUtil {
         return Component.empty()
                 .append(Component
                         .text()
-                        .content(MessageFormat.format("[{}]", key.asMinimalString()))
+                        .content(MessageFormat.format("[{0}]", key.asMinimalString()))
                         .color(NamedTextColor.AQUA)
                         .decorate(TextDecoration.BOLD));
     }
@@ -58,7 +58,7 @@ public final class ComponentUtil {
             return Component.empty()
                     .append(Component
                             .text()
-                            .content(MessageFormat.format("[{}] {}", index, value))
+                            .content(MessageFormat.format("[{0}] {1}", index, value))
                             .hoverEvent(HoverEvent
                                     .showText(Component
                                             .text(type, NamedTextColor.YELLOW)
@@ -70,12 +70,12 @@ public final class ComponentUtil {
                 .map(withIndex -> mapping.apply(withIndex._2, withIndex._1).appendSpace());
 
         if (array.size() <= length * 2) {
-            return namespacedKey(key).append(result.fold(Component.empty(), (a, b) -> a.append(b)));
+            return namespacedKey(key).append(result.fold(Component.empty(), Component::append));
         }
 
-        final var left = result.takeRight(length).fold(Component.empty(), (a, b) -> a.append(b));
-        final var right = result.take(length).fold(Component.empty(), (a, b) -> a.append(b));
-        final var between = result.drop(length).dropRight(length).fold(Component.empty(), (a, b) -> a.append(b));
+        final var left = result.takeRight(length).fold(Component.empty(), Component::append);
+        final var right = result.take(length).fold(Component.empty(), Component::append);
+        final var between = result.drop(length).dropRight(length).fold(Component.empty(), Component::append);
 
         return namespacedKey(key).append(Component.empty()
                 .append(left)

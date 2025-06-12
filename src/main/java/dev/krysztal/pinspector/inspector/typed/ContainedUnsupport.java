@@ -30,7 +30,7 @@ public final class ContainedUnsupport extends Contained<Void> {
     public Component toAdventureComponent() {
         return Component.empty()
                 .append(Component.text()
-                        .content(MessageFormat.format("[{}]", this.getKey().asMinimalString()))
+                        .content(MessageFormat.format("[{0}]", this.getKey().asMinimalString()))
                         .color(NamedTextColor.AQUA))
                 .appendSpace()
                 .append(Component.text()
