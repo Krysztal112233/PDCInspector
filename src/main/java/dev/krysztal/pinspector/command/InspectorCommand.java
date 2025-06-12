@@ -11,25 +11,33 @@ package dev.krysztal.pinspector.command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.krysztal.pinspector.PluginPermission;
+import dev.krysztal.pinspector.command.executor.ChunkInspector;
 import dev.krysztal.pinspector.command.executor.PlayerInspector;
 import dev.krysztal.pinspector.command.executor.WorldInspector;
 import dev.krysztal.pinspector.command.suggestion.PlayerSuggestion;
 import dev.krysztal.pinspector.command.suggestion.WorldSuggestion;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 
 public class InspectorCommand {
     public static LiteralArgumentBuilder<CommandSourceStack> createCommand() {
         return Commands
                 .literal("pinspect")
                 .requires(s -> s.getSender().hasPermission(PluginPermission.PDC_DEBUGGER))
-                // .then(Commands.literal("chunk"))
                 .then(Commands
                         .literal("world")
                         .then(Commands
                                 .argument("name", StringArgumentType.word())
                                 .suggests(WorldSuggestion.INSTANCE)
                                 .executes(WorldInspector.INSTANCE)))
+                .then(Commands
+                        .literal("chunk")
+                        .then(Commands
+                                .argument("world", StringArgumentType.word())
+                                .suggests(WorldSuggestion.INSTANCE)
+                                .then(Commands.argument("pos", ArgumentTypes.blockPosition())
+                                        .executes(ChunkInspector.INSTANCE))))
                 .then(Commands
                         .literal("player")
                         .then(Commands
