@@ -43,10 +43,6 @@ public interface Inspector extends Command<CommandSourceStack> {
                 .decorate(TextDecoration.UNDERLINED)
                 .decorate(TextDecoration.ITALIC));
         sender.sendMessage(result);
-        sender.sendMessage(Component
-                .text(" ==== INSPECTION ==== ")
-                .decorate(TextDecoration.UNDERLINED)
-                .decorate(TextDecoration.ITALIC));
 
         return 0;
     }
