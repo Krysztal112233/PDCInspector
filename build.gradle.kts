@@ -3,7 +3,6 @@ import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 import java.io.ByteArrayOutputStream
 
 
-
 val pluginChannel = System.getenv("CHANNEL") ?: "Snapshot"
 val pluginLatestCommitMessage = gitCmd("log", "-1", "--pretty=%B")
 val pluginSnapshotVersion = (project.version as String) + "+git" + gitCmd("rev-parse", "--short", "HEAD")
@@ -26,6 +25,12 @@ plugins {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.jar {
+    from(".") {
+        include("LICENSE")
     }
 }
 
@@ -111,10 +116,10 @@ publishMods {
     file = tasks.jar.get().archiveFile
     type = getReleaseType()
     modLoaders = listOf("paper", "folia")
+    changelog = pluginLatestCommitMessage
 
     if (pluginChannel == "Snapshot") {
         version = pluginSnapshotVersion
-        changelog = pluginLatestCommitMessage
     } else {
         version = project.version as String
     }
