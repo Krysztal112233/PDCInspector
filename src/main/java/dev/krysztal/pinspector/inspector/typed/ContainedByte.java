@@ -27,6 +27,6 @@ public final class ContainedByte extends Contained<Byte> {
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedComponent(this.getKey(), "Byte", MessageFormat.format("{}", this.value));
+        return ComponentUtil.buildTypedComponent(this.getKey(), "Byte", MessageFormat.format("{0}", this.value));
     }
 }

@@ -27,6 +27,6 @@ public final class ContainedShort extends Contained<Short> {
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedComponent(this.getKey(), "Short", MessageFormat.format("{}", this.value));
+        return ComponentUtil.buildTypedComponent(this.getKey(), "Short", MessageFormat.format("{0}", this.value));
     }
 }

@@ -27,6 +27,6 @@ public final class ContainedFloat extends Contained<Float> {
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedComponent(this.getKey(), "Float", MessageFormat.format("{}", this.value));
+        return ComponentUtil.buildTypedComponent(this.getKey(), "Float", MessageFormat.format("{0}", this.value));
     }
 }

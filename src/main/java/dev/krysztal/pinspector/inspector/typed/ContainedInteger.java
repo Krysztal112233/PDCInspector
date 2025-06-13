@@ -27,7 +27,7 @@ public final class ContainedInteger extends Contained<Integer> {
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedComponent(this.getKey(), "Integer", MessageFormat.format("{}", this.value));
+        return ComponentUtil.buildTypedComponent(this.getKey(), "Integer", MessageFormat.format("{0}", this.value));
     }
 
 }

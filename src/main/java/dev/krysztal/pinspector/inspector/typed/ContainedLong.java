@@ -27,7 +27,7 @@ public final class ContainedLong extends Contained<Long> {
 
     @Override
     public Component toAdventureComponent() {
-        return ComponentUtil.buildTypedComponent(this.getKey(), "Long", MessageFormat.format("{}", this.value));
+        return ComponentUtil.buildTypedComponent(this.getKey(), "Long", MessageFormat.format("{0}", this.value));
     }
 
 }
