@@ -11,6 +11,7 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
+
 repositories {
     mavenCentral()
 }
@@ -37,7 +38,7 @@ spotless {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
 
     implementation("io.vavr:vavr:0.10.6")
     implementation("one.util:streamex:0.8.3")
@@ -50,6 +51,8 @@ dependencies {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.4")
+        minecraftVersion("1.21")
+    }
+}
     }
 }

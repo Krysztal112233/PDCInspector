@@ -1,7 +1,7 @@
 name: Pinspector
 version: "1.0"
 description: "PersistentDataContainer(PDC) inspector"
-api-version: 1.21.4
+api-version: 1.21
 main: dev.krysztal.pinspector.Plugin
 libraries:
     - "io.vavr:vavr:0.10.6"
