@@ -3,15 +3,6 @@ import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 import java.io.ByteArrayOutputStream
 
 
-val pluginChannel = System.getenv("CHANNEL") ?: "Snapshot"
-val pluginLatestCommitMessage = gitCmd("log", "-1", "--pretty=%B")
-val pluginSnapshotVersion = (project.version as String) + "+git" + gitCmd("rev-parse", "--short", "HEAD")
-
-println("Plugin version: $pluginSnapshotVersion")
-println("Plugin latest commit: $pluginLatestCommitMessage")
-println("Plugin channel: $pluginChannel")
-println("Plugin release type: ${getReleaseType()}")
-
 plugins {
     java
     `java-library`
@@ -21,6 +12,15 @@ plugins {
     id("me.modmuss50.mod-publish-plugin") version "0.8+"
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
+
+val pluginChannel = System.getenv("CHANNEL") ?: "Snapshot"
+val pluginLatestCommitMessage = gitCmd("log", "-1", "--pretty=%B")
+val pluginSnapshotVersion = (project.version as String) + "+git_" + gitCmd("rev-parse", "--short", "HEAD")
+
+println("Plugin version: $pluginSnapshotVersion")
+println("Plugin latest commit: $pluginLatestCommitMessage")
+println("Plugin channel: $pluginChannel")
+println("Plugin release type: ${getReleaseType()}")
 
 java {
     toolchain {
