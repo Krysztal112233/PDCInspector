@@ -2,7 +2,6 @@ plugins {
     java
     `java-library`
     id("com.diffplug.spotless") version "7.0.3"
-    id("com.github.spotbugs") version "6.1.7"
     id("io.papermc.paperweight.userdev") version "2.0.0+"
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
