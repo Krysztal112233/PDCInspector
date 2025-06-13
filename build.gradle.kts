@@ -71,7 +71,17 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.38")
 }
 
+java {
+    withSourcesJar()
+}
+
 tasks {
+    processResources {
+        filesMatching("plugin.yml") {
+            expand("version" to pluginSnapshotVersion)
+        }
+    }
+
     runServer {
         minecraftVersion("1.21")
     }

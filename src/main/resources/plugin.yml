@@ -1,5 +1,5 @@
 name: Pinspector
-version: "1.0"
+version: "${version}"
 description: "PersistentDataContainer(PDC) inspector"
 api-version: 1.21
 main: dev.krysztal.pinspector.Plugin
