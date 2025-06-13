@@ -1,6 +1,12 @@
+<div align="center">
+
 # PDC Inspector
 
-The `PersistentDataContainer` inspector of PaperMC.
+_✨ The `PersistentDataContainer` inspector of PaperMC. ✨_
+
+![screenshot](https://github.com/Krysztal112233/PDCInspector/raw/main/assets/screenshot.png)
+
+</div>
 
 ## What's `PersistentDataContainer`, `PDC`?
 
