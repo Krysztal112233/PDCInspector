@@ -27,8 +27,7 @@ public final class ComponentUtil {
                 .append(Component
                         .text()
                         .content(MessageFormat.format("[{0}]", key.asMinimalString()))
-                        .color(NamedTextColor.AQUA)
-                        .decorate(TextDecoration.BOLD));
+                        .color(NamedTextColor.AQUA));
     }
 
     public static Component buildTypedComponent(
