@@ -12,6 +12,14 @@ performant.
 
 ---
 
+This plugin has three sub-command now:
+
+- `pinspector world`
+- `pinspector player`
+- `pinspector chunk`
+
+After you type those command it will give you suggestion, have fun :)
+
 **_NOTICE: THIS PLUGIN STILL UNDER DEVELOPING_**
 
 ## Ongoing
