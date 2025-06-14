@@ -10,37 +10,38 @@ package dev.krysztal.pinspector.command.executor;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
+import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
+import io.vavr.control.Option;
 import io.vavr.control.Try;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
-import one.util.streamex.StreamEx;
 
-public enum EntityInspector implements Inspector {
+public enum ItemStackInspector implements Inspector {
     INSTANCE;
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Tuple2<String, PersistentDataContainerView>> getPersistentDataContainerView(
             final CommandContext<CommandSourceStack> context) {
-        final var entitySelectorArgumentResolver = context.getArgument("arg", EntitySelectorArgumentResolver.class);
-        final var tryEntities = Try.of(() -> entitySelectorArgumentResolver.resolve(context.getSource()));
-        if (tryEntities.isFailure()) {
+        final var targetResolver = context.getArgument("arg", PlayerSelectorArgumentResolver.class);
+        final var tryTarget = Try.of(() -> targetResolver.resolve(context.getSource()));
+        if (tryTarget.isEmpty()) {
             return Collections.EMPTY_LIST;
         }
 
-        var entities = tryEntities.get();
+        final var slot = context.getArgument("slot", Integer.class);
+        final var player = tryTarget.get().getFirst();
 
-        return StreamEx.of(entities).map(e -> {
-            var identifier = MessageFormat.format("{0} at ({1}, {2}, {3})",
-                    e.getName(),
-                    e.getLocation().getX(),
-                    e.getLocation().getY(),
-                    e.getLocation().getZ());
-            return Tuple.of(identifier, (PersistentDataContainerView) e.getPersistentDataContainer());
-        }).toList();
+        final var optItem = Option.of(player.getInventory().getItem(slot));
+        if (optItem.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+
+        return List.of(Tuple.of(MessageFormat.format("ITEM AT {0} OF {1}", slot, player.getName()),
+                optItem.get().getPersistentDataContainer()));
     }
 }

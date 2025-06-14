@@ -32,13 +32,13 @@ After you type those command it will give you suggestion, have fun :)
 
 - Chunk
 - Entity
+- ItemStack
 - World
 
 ## TODO
 
 - GeneratedStructure
 - ItemMeta
-- ItemStack
 - OfflinePlayer
 - Raid
 - Structure

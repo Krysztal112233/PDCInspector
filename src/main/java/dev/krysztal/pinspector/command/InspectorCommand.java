@@ -8,11 +8,14 @@
 // See the file LICENSE for the full license text.
 package dev.krysztal.pinspector.command;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.krysztal.pinspector.PluginPermission;
 import dev.krysztal.pinspector.command.executor.ChunkInspector;
 import dev.krysztal.pinspector.command.executor.EntityInspector;
+import dev.krysztal.pinspector.command.executor.ItemStackInspector;
 import dev.krysztal.pinspector.command.executor.WorldInspector;
+import dev.krysztal.pinspector.command.suggestion.InventorySuggestion;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
@@ -36,7 +39,15 @@ public class InspectorCommand {
                 .then(Commands
                         .literal("entity")
                         .then(Commands
-                                .argument("args", ArgumentTypes.entity())
-                                .executes(EntityInspector.INSTANCE)));
+                                .argument("arg", ArgumentTypes.entity())
+                                .executes(EntityInspector.INSTANCE)))
+                .then(Commands
+                        .literal("item")
+                        .then(Commands
+                                .argument("arg", ArgumentTypes.player())
+                                .then(Commands
+                                        .argument("slot", IntegerArgumentType.integer())
+                                        .suggests(InventorySuggestion.INSTANCE)
+                                        .executes(ItemStackInspector.INSTANCE))));
     }
 }
