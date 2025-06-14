@@ -11,19 +11,24 @@ package dev.krysztal.pinspector.command.executor;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import io.vavr.control.Option;
-import org.bukkit.Bukkit;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import java.util.List;
+import java.util.stream.Stream;
 import org.bukkit.World;
 
 public enum WorldInspector implements Inspector {
     INSTANCE;
 
     @Override
-    public Option<PersistentDataContainerView> getPersistentDataContainerView(
+    public List<Tuple2<String, PersistentDataContainerView>> getPersistentDataContainerView(
             CommandContext<CommandSourceStack> context) {
-        var playerName = context.getArgument("name", String.class);
 
-        return Option.of(Bukkit.getWorld(playerName)).map(World::getPersistentDataContainer);
+        var world = context.getArgument("world", World.class);
+
+        return Stream.of(world)
+                .map(c -> Tuple.of(c.getName(), ((PersistentDataContainerView) c.getPersistentDataContainer())))
+                .toList();
     }
 
 }

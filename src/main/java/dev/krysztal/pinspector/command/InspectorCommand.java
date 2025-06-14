@@ -8,14 +8,11 @@
 // See the file LICENSE for the full license text.
 package dev.krysztal.pinspector.command;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.krysztal.pinspector.PluginPermission;
 import dev.krysztal.pinspector.command.executor.ChunkInspector;
-import dev.krysztal.pinspector.command.executor.PlayerInspector;
+import dev.krysztal.pinspector.command.executor.EntityInspector;
 import dev.krysztal.pinspector.command.executor.WorldInspector;
-import dev.krysztal.pinspector.command.suggestion.PlayerSuggestion;
-import dev.krysztal.pinspector.command.suggestion.WorldSuggestion;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
@@ -28,21 +25,18 @@ public class InspectorCommand {
                 .then(Commands
                         .literal("world")
                         .then(Commands
-                                .argument("name", StringArgumentType.word())
-                                .suggests(WorldSuggestion.INSTANCE)
+                                .argument("world", ArgumentTypes.world())
                                 .executes(WorldInspector.INSTANCE)))
                 .then(Commands
                         .literal("chunk")
                         .then(Commands
-                                .argument("world", StringArgumentType.word())
-                                .suggests(WorldSuggestion.INSTANCE)
+                                .argument("world", ArgumentTypes.world())
                                 .then(Commands.argument("pos", ArgumentTypes.blockPosition())
                                         .executes(ChunkInspector.INSTANCE))))
                 .then(Commands
-                        .literal("player")
+                        .literal("entity")
                         .then(Commands
-                                .argument("name", StringArgumentType.word())
-                                .suggests(PlayerSuggestion.INSTANCE)
-                                .executes(PlayerInspector.INSTANCE)));
+                                .argument("args", ArgumentTypes.entity())
+                                .executes(EntityInspector.INSTANCE)));
     }
 }

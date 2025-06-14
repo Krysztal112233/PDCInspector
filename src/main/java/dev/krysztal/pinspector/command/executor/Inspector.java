@@ -15,34 +15,37 @@ import dev.krysztal.pinspector.inspector.PDCInspector;
 import dev.krysztal.pinspector.inspector.typed.Contained;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import io.vavr.control.Option;
+import io.vavr.Tuple2;
+import java.text.MessageFormat;
+import java.util.List;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.ScopedComponent;
 import net.kyori.adventure.text.format.TextDecoration;
 import one.util.streamex.StreamEx;
 
 public interface Inspector extends Command<CommandSourceStack> {
-    Option<PersistentDataContainerView> getPersistentDataContainerView(CommandContext<CommandSourceStack> context);
+    List<Tuple2<String, PersistentDataContainerView>> getPersistentDataContainerView(
+            CommandContext<CommandSourceStack> context);
 
     default int run(final CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        final var optPDC = this.getPersistentDataContainerView(context);
-        if (optPDC.isEmpty()) {
-            return -1;
-        }
-
-        final var result = StreamEx.of(PDCInspector.of(optPDC.get()).consume())
+        final var result = StreamEx.of(this.getPersistentDataContainerView(context))
                 .parallel()
-                .map(Contained::toAdventureComponent)
-                .map(Component::appendNewline)
-                .map(Component::asComponent)
+                .map(m -> {
+                    var inner = StreamEx.of(PDCInspector.of(m._2).consume())
+                            .map(Contained::toAdventureComponent)
+                            .map(ComponentLike::asComponent)
+                            .foldLeft(Component.empty(), ScopedComponent::append);
+
+                    return Component.text(MessageFormat.format(" ==== INSPECTION OF {0} ==== ", m._1))
+                            .decorate(TextDecoration.UNDERLINED)
+                            .decorate(TextDecoration.ITALIC).appendNewline().appendNewline()
+                            .append(inner)
+                            .asComponent();
+                })
                 .foldLeft(Component.empty(), ScopedComponent::append);
 
-        final var sender = context.getSource().getSender();
-
-        sender.sendMessage(Component.text(" ==== INSPECTION ==== ")
-                .decorate(TextDecoration.UNDERLINED)
-                .decorate(TextDecoration.ITALIC));
-        sender.sendMessage(result);
+        context.getSource().getSender().sendMessage(result);
 
         return 0;
     }

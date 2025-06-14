@@ -10,7 +10,7 @@ package dev.krysztal.pinspector.command.executor;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.command.brigadier.argument.resolvers.BlockPositionResolver;
+import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
@@ -18,29 +18,29 @@ import io.vavr.control.Try;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
-import org.bukkit.World;
+import one.util.streamex.StreamEx;
 
-public enum ChunkInspector implements Inspector {
+public enum EntityInspector implements Inspector {
     INSTANCE;
 
     @Override
     public List<Tuple2<String, PersistentDataContainerView>> getPersistentDataContainerView(
             final CommandContext<CommandSourceStack> context) {
-        final var world = context.getArgument("world", World.class);
-        final var tryPos = Try.of(() -> context
-                .getArgument("pos", BlockPositionResolver.class)
-                .resolve(context.getSource()));
-
-        if (tryPos.isFailure()) {
+        final var entitySelectorArgumentResolver = context.getArgument("args", EntitySelectorArgumentResolver.class);
+        final var tryEntities = Try.of(() -> entitySelectorArgumentResolver.resolve(context.getSource()));
+        if (tryEntities.isFailure()) {
             return Collections.EMPTY_LIST;
         }
 
-        final var pos = tryPos.get();
-        final var chunk = world.getChunkAt(pos.toLocation(world));
+        var entities = tryEntities.get();
 
-        return List.of(
-                Tuple.of(MessageFormat.format("CHUNK AT ({0}, {1}, {2})",
-                        pos.x(), pos.y(), pos.z()),
-                        chunk.getPersistentDataContainer()));
+        return StreamEx.of(entities).map(e -> {
+            var identifier = MessageFormat.format("{0} at ({1}, {2}, {3})",
+                    e.getName(),
+                    e.getLocation().getX(),
+                    e.getLocation().getY(),
+                    e.getLocation().getZ());
+            return Tuple.of(identifier, (PersistentDataContainerView) e.getPersistentDataContainer());
+        }).toList();
     }
 }
