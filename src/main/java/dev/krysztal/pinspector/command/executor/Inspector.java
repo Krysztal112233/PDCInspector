@@ -34,6 +34,7 @@ public interface Inspector extends Command<CommandSourceStack> {
                 .map(m -> {
                     var inner = StreamEx.of(PDCInspector.of(m._2).consume())
                             .map(Contained::toAdventureComponent)
+                            .map(Component::appendNewline)
                             .map(ComponentLike::asComponent)
                             .foldLeft(Component.empty(), ScopedComponent::append);
 
